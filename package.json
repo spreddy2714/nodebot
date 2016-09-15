@@ -1,0 +1,22 @@
+{
+  "name": "nodebot",
+  "version": "1.0.0",
+  "description": "Nodebot",
+  "main": "index.js",
+  "scripts": {
+    "test": "Hi"
+  },
+  "keywords": [
+    "nodebot"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/spreddy2714/nodebot.git"
+  },
+  "author": "sp",
+  "license": "ISC",
+  "dependencies": {
+    "botbuilder": "^3.2.3",
+    "restify": "^5.0.0-beta-1"
+  }
+}
