@@ -1,8 +1,8 @@
 var builder = require('botbuilder');
 var restify = require('restify');
-var process = require('./env.js');
+//var process = require('./env.js');
 var assert = require('assert');
-var RestifyClient = require('./client.js');
+var appRestifyClient = require('./client.js');
 //=========================================================
 // Bot Setup
 //=========================================================
@@ -13,10 +13,7 @@ server.listen(process.env.port || process.env.PORT || 3978, function () {
     console.log('%s listening to %s', server.name, server.url);
 });
 
-RestifyClient.login({}, function (err, req, res, obj) {
-    console.log('%j', obj);
-    // session.beginDialog('/profile');
-});
+
 // Create chat bot
 var connector = new builder.ChatConnector({
     appId: process.env.MICROSOFT_APP_ID,
