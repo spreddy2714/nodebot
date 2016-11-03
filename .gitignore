@@ -35,3 +35,4 @@ node_modules
 
 # web bot folder
 web-bot
+env.js
