@@ -32,10 +32,9 @@ bot.dialog('/', intents);
 
 intents.matches(/^Change name/i, [
     function (session) {
-        appRestifyClient.login({}, function (err, req, res, obj) {
-            console.log('%j', obj);
-            session.beginDialog('/profile');
-        });
+
+        session.beginDialog('/profile');
+
     },
     function (session, results) {
         session.send('Ok.. I have changed your name to %s', session.userData.name);
@@ -56,7 +55,15 @@ intents.matches(/^login/i, [
         session.beginDialog('/login');
     },
     function (session, results) {
-        session.send('How is the picture like?');
+    }
+]);
+
+intents.matches(/^top question/i, [
+    function (session) {
+        session.beginDialog('/topquestion');
+    },
+    function (session, results) {
+
     }
 ]);
 
@@ -108,15 +115,43 @@ bot.dialog('/picture', [
 
 bot.dialog('/login', [
     function (session) {
-        var signinCard = new builder.SigninCard(session)
-            .button("Login", "http://questfy.ubiqfy.com/#/login")
-            .text("Login")
-        var msg = new builder.Message(session)
-            .attachments([
-                signinCard
-            ]);
-        console.log(signinCard.toAttachment());
-        session.endDialog(msg);
+        var credential = {
+            username: 'spreddy594@gmail.com',
+            pwd: '7u8i9o0p00'
+        };
+        appRestifyClient.login(credential, function (loginSuccess) {
+            if (loginSuccess) {
+                session.send("Welcome to the world of Quest!");
+            }
+        });
+        session.endDialog();
+    },
+    function (session, results) {
+        session.endDialog();
+    }
+]);
+
+bot.dialog('/topquestion', [
+    function (session) {
+
+        appRestifyClient.getTopQuestion(function (data) {
+            console.log(data);
+
+            var msg = new builder.Message(session)
+                .textFormat(builder.TextFormat.xml)
+                .attachments([
+                    new builder.HeroCard(session)
+                        .title(data.title)
+                        .subtitle(data.category)
+                        .text(data.description)
+                        .images([
+                            builder.CardImage.create(session, "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Seattlenighttimequeenanne.jpg/320px-Seattlenighttimequeenanne.jpg")
+                        ])
+                        .tap(builder.CardAction.openUrl(session, "http://questfy.ubiqfy.com/#/stu/question/view/" + data.id))
+                ]);
+            session.endDialog(msg);
+        });
+        session.endDialog();
     },
     function (session, results) {
         session.endDialog();
