@@ -11,6 +11,15 @@ function RestifyClient() {
     this.getAccessToken = function () {
         return this.accessToken;
     };
+
+    this.getAuthorizedUrl = function (url) {
+        return {
+            path: url,
+            headers: {
+                'authorization': 'Bearer ' + this.getAccessToken()
+            }
+        };
+    }
 }
 
 RestifyClient.prototype.login = function (credential, callback) {
@@ -27,15 +36,22 @@ RestifyClient.prototype.getTopQuestion = function (callback) {
 
     var self = this;
     var url = "/app/rest/api/v1/secure/questions?pageNumber=1&pageSize=1";
-    var options = {
-        path: url,
-        headers: {
-            'authorization': 'Bearer ' + self.getAccessToken()
-        }
-    }
+    var options = this.getAuthorizedUrl(url);
     self.jsonClient.get(options, function (err, req, res, obj) {
         if (obj && obj.data && obj.data.length > 0) {
             callback(obj.data[0])
+        }
+    });
+};
+
+RestifyClient.prototype.createQuest = function (quest, callback) {
+    var self = this;
+    var url = "/app/rest/api/v1/secure/questions";
+    var options = this.getAuthorizedUrl(url);
+    console.log('Authrized url' + options);
+    self.jsonClient.post(options, quest, function (err, req, res, obj) {
+        if (obj && obj.code == 0) {
+            callback(true);
         }
     });
 };
