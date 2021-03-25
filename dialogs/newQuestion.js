@@ -10,8 +10,8 @@ function NewQuestion(bot, builder) {
         function (session, results) {
             var currentDate = new Date();
             session.userData.quest = {
-                email: 'spreddy594@gmail.com', userId: 46,
-                userName: 'Siva Prathap Reddy', categoryId: 2,
+                email: 'abc@def.com', userId: 46,
+                userName: 'Abc def', categoryId: 2,
                 creationDateTime: currentDate, lastUpdatedDateTime: currentDate
             };
             session.userData.quest.title = results.response;
